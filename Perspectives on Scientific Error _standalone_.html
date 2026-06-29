@@ -167,6 +167,71 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
       window.Babel.transformScriptTags();
     }
+
+    const setText = (selector, value) => {
+      const node = document.querySelector(selector);
+      if (node) node.textContent = value;
+    };
+
+    setText('#top .meta span:first-child', '27–29 January 2027');
+    setText('#venue h2', 'Location');
+
+    const venueLines = document.querySelectorAll('#venue .addr div');
+    if (venueLines.length >= 4) {
+      venueLines[1].textContent = 'City Campus';
+      venueLines[2].textContent = 'Oster Farimagsgade 5';
+      venueLines[3].textContent = '1353 Copenhagen K';
+    }
+
+    setText('#register .status', 'Registration opens in early Fall');
+    document.querySelectorAll('#register .rrow .v').forEach((node) => {
+      node.textContent = 'TBA';
+    });
+
+    document.querySelectorAll('a[href="#register"]').forEach((node) => {
+      node.setAttribute('href', 'https://forms.office.com/e/XwuJ2b0Cq0');
+    });
+
+    if (!document.querySelector('#committee')) {
+      const committee = document.createElement('section');
+      committee.id = 'committee';
+      committee.innerHTML = `
+    <div class="wrap">
+      <div class="seclabel"><span>Organizing committee</span></div>
+      <div class="cols">
+        <div>
+          <p class="lede"><strong>Johanna Einsiedler</strong>, University of Copenhagen &amp; University of Basel, johanna.einsiedler@sodas.ku.dk</p>
+          <p class="lede"><strong>Veronika Cheplygina</strong>, IT University of Copenhagen (ITU)</p>
+          <p class="lede"><strong>Joeri Witteveen</strong>, University of Copenhagen</p>
+          <p class="lede"><strong>Attila Simkó</strong>, Umeå University</p>
+          <p class="lede"><strong>Peder Isager</strong>, Oslo New University College</p>
+          <p class="lede"><strong>Daniel Lakens</strong>, Eindhoven University of Technology</p>
+          <p class="lede"><strong>Felipe Romero</strong>, University of Groningen</p>
+          <p class="lede"><strong>Noah van Dongen</strong>, Erasmus University Rotterdam</p>
+          <p><a class="cta" href="mailto:johanna.einsiedler@sodas.ku.dk">Questions? Contact us</a></p>
+        </div>
+      </div>
+    </div>`;
+      const footer = document.querySelector('footer');
+      if (footer && footer.parentNode) footer.parentNode.insertBefore(committee, footer);
+    }
+
+    document.querySelectorAll('#venue .notes').forEach((node) => node.remove());
+
+    const footerOrg = document.querySelector('footer .org-list');
+    if (footerOrg) {
+      footerOrg.innerHTML = '<b>Perspectives on Scientific Error · PSE9</b><br><a href="https://errorsin.science">errorsin.science</a>';
+    }
+
+    document.querySelectorAll('#construction text').forEach((node) => node.remove());
+
+    const patchConstructionLabels = () => {
+      document.querySelectorAll('#construction text').forEach((node) => node.remove());
+    };
+    setTimeout(patchConstructionLabels, 0);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(patchConstructionLabels);
+    }
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
     console.error('Bundle unpack error:', err);
