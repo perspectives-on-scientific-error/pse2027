@@ -26,6 +26,7 @@ jobs:
         run: |
           mkdir -p _site
           cp "Perspectives on Scientific Error _standalone_.html" _site/index.html
+          if [ -d assets ]; then cp -R assets _site/assets; fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
